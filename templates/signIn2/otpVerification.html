@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Password Reset</title>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css'>
+  <link rel="stylesheet" href="{% static 'assets5/css/style.css' %}">
+</head>
+<body>
+<div class="container" id="container">
+    <div class="form-container reset-password-container">
+        <form method="post">
+            {% csrf_token %}
+            
+            <h1>Password Reset</h1><br>
+            
+            <h1><i class="fas fa-key"></i></h1><br>
+
+            <input type="email" placeholder="Email" name="email"/>
+            
+            <a  href="{% url 'sign-in' %}">Sign in</a>
+            <button>Send Otp</button>
+            {% if messages %}
+                {% for m in messages %}
+                    <b style="color:red;
+                    margin-top:20px;">{{m}}</b>
+                {% endfor %}
+            {% endif %}
+        </form>
+     
+    </div>
+    
+
+
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-right">
+                <h1>Password Reset</h1>
+                <p>Please enter your email and new password to reset your password.</p>
+            </div>
+        </div>
+    </div>
+</div>
+  <script  src="{% static 'assets5/js/script.js' %}"></script>
+</body>
+</html>

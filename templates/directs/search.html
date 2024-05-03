@@ -1,0 +1,252 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% load crispy_forms_tags %} 
+{% block content %}
+<br><br>
+<style>
+  /* Search Container */
+.search-container {
+  width: 500px;
+  /* height: 500px; */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-in-out;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Search Box */
+.search-box {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  overflow: hidden;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  font-family: inherit;
+}
+
+.search-btn {
+  padding: 12px 20px;
+  background-color: #e53935;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+  background-color: #0077b6;
+}
+
+/* Results Container */
+.results-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.results-header {
+  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #262626;
+  text-align:center;
+}
+
+/* User Profile */
+/* User Profile */
+.user-profile {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  height: 110px; /* Add this line */
+}
+
+.user-profile:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-info {
+  margin-left: 10px;
+  display: flex; /* Add this line */
+  flex-direction: column; /* Add this line */
+  justify-content: center; /* Add this line */
+}
+
+.user-name {
+  font-weight: bold;
+  color: #262626;
+  text-decoration: none;
+}
+
+.user-username {
+  font-size: 14px;
+  color: #8e8e8e;
+}
+
+.user-button {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #0095f6;
+  color: #fff;
+  border-radius: 3px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  margin-top: 5px; /* Add this line */
+}
+
+.user-button:hover {
+  background-color: #0077b6;
+}
+.user-profile:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-info {
+  margin-left: 10px;
+}
+
+.user-name {
+  font-weight: bold;
+  color: #262626;
+  text-decoration: none;
+}
+
+.user-username {
+  font-size: 14px;
+  color: #8e8e8e;
+}
+
+.user-button {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #0095f6;
+  color: #fff;
+  border-radius: 3px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.user-button:hover {
+  background-color: #0077b6;
+}
+
+/* No Results */
+.no-results {
+  text-align: center;
+  font-size: 18px;
+  color: #8e8e8e;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
+<div class="search-container">
+  <div class="search-box">
+    <form action="" method="GET" class="search-form">
+      <input type="text" placeholder="Search users..." name="q" value="{{ request.GET.q }}" class="search-input">
+      <button class="search-btn" type="submit">
+        <i class="fas fa-search"></i>
+      </button>
+    </form>
+  </div>
+  <div class="results-container">
+    <h3 class="results-header">Search Results</h3>
+    {% if users %}
+      {% for user in users %}
+      <div class="user-profile">
+        <a href="{% url 'profile' user.username %}" class="user-avatar">
+          {% if user.profile.image.url %}
+          <img src="{{ user.profile.image.url }}" alt="User Picture">
+          {% else %}
+          <img src="{% static 'assets1/default.jpg' %}" alt="User Picture">
+          {% endif %}
+        </a>
+        <div class="user-info">
+          {% if user.profile.first_name %}
+          <a href="{% url 'profile' user.username %}" class="user-name">{{user.profile.first_name|title }} {{user.profile.last_name|title }}</a>
+          {% else%}
+          <a href="{% url 'profile' user.username %}" class="user-name">NotesHub User</a>
+          {% endif %}
+          <span class="user-username">@{{user.username}}</span>
+          <a href="{% url 'profile' user.username %}" class="user-button">View Profile</a>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="no-results">No users found.</p>
+    {% endif %}
+  </div>
+</div>
+<script>
+  // Add animation to search input on focus
+const searchInput = document.querySelector('.search-input');
+
+searchInput.addEventListener('focus', () => {
+  searchInput.classList.add('animate');
+});
+
+searchInput.addEventListener('blur', () => {
+  searchInput.classList.remove('animate');
+});
+</script>
+{% endblock content %}

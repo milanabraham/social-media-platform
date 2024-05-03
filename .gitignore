@@ -1,0 +1,8 @@
+# Ignore large files
+*.pdf
+*.zip
+*.tar.gz
+*.mp4
+
+# Ignore files larger than 100 MB
+*.{largefile}  # Adjust large file extension as necessary

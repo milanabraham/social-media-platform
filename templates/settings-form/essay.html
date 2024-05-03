@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Essay Generator</title>
+  <link rel="stylesheet" href="{% static 'forms/style.css' %}">
+</head>
+<body>
+  <div class="container">
+    <h1>Essay Generator</h1>
+      {% csrf_token %}
+      <label for="topic">Enter your topic:</label>
+      <input type="text" name="topic" id="topic" required>
+      <button type="submit">Generate Essay</button>
+    </form>
+    <div id="result" class="hidden">
+      <h2>Generated Essay:</h2>
+      <p id="essayContent"></p>
+    </div>
+  </div>
+</body>
+</html>

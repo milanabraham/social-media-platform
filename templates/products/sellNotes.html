@@ -1,0 +1,151 @@
+
+{% extends 'products/navbar.html' %}
+
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registration Form</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="{% static 'products/sellNotes.css' %}">
+</head>
+<body>
+<div class="container">
+  <form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <div class="row">
+      <h4>Upload Note</h4>
+      <!-- here i want the upload to upload files input also -->
+      <div class="input-group input-group-icon">
+        <input type="file" id="file-upload" name="note_file" >
+        <div class="input-icon">
+          <i class="fa fa-file"></i>
+        </div>
+      </div>
+      <!-- up to here -->
+
+
+      <h4>Add Details</h4>
+      <div class="input-group input-group-icon">
+        <input type="text" placeholder="Title" name="title">
+        <div class="input-icon">
+          <i class="fas fa-heading"></i> <!-- Icon for Title -->
+        </div>
+      </div>
+      <div class="input-group input-group-icon">
+        <input type="text" placeholder="Course Name" name="course">
+        <div class="input-icon">
+          <i class="fas fa-book"></i> <!-- Icon for Course Name -->
+        </div>
+      </div>
+      <div class="input-group input-group-icon">
+        <input type="text" placeholder="Institution" name="institution">
+        <div class="input-icon">
+          <i class="fas fa-university"></i> <!-- Icon for Institution -->
+        </div>
+      </div>
+      <div class="input-group input-group-icon">
+        <input type="text" placeholder="Field" name="field">
+        <div class="input-icon">
+          <i class="fas fa-cogs"></i> <!-- Icon for Field -->
+        </div>
+      </div>
+
+      <h4>Description</h4>
+
+
+      <div class="input-group input-group-icon">
+        <textarea name="note_desc"  cols="30" rows="10" class="description"></textarea>
+        <div class="input-icon">
+          <!-- <i class="fas fa-description"></i> Icon for Field -->
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="row">
+      <div class="col-half">
+        <h4>Date of Birth</h4>
+        <div class="input-group">
+          <div class="col-third">
+            <input type="text" placeholder="DD">
+          </div>
+          <div class="col-third">
+            <input type="text" placeholder="MM">
+          </div>
+          <div class="col-third">
+            <input type="text" placeholder="YYYY">
+          </div>
+        </div>
+      </div>
+      <div class="col-half">
+        <h4>Gender</h4>
+        <div class="input-group">
+          <input id="gender-male" type="radio" name="gender" value="male">
+          <label for="gender-male">Male</label>
+          <input id="gender-female" type="radio" name="gender" value="female">
+          <label for="gender-female">Female</label>
+        </div>
+      </div>
+    </div> -->
+    {% comment %} <div class="row">
+      <h4>Payment Details</h4>
+      <div class="input-group input-group-icon">
+        <input type="text" placeholder="Expected Amount" name="exp_amount">
+        <div class="input-icon">
+            <i class="fas fa-rupee-sign"></i>
+            <!-- Icon for Field -->
+        </div>
+      </div> {% endcomment %}
+
+      {% comment %} <div class="input-group">
+        <input id="payment-method-card" type="radio" name="payment-method" value="card" checked>
+        <label for="payment-method-card"><span><i class="fa fa-cc-visa"></i> Credit Card</span></label>
+        <input id="payment-method-paypal" type="radio" name="payment-method" value="paypal">
+        <label for="payment-method-paypal"><span><i class="fa fa-cc-paypal"></i> Paypal</span></label>
+      </div> {% endcomment %}
+      {% comment %} <div class="input-group input-group-icon">
+        <input type="text" placeholder="Card Number">
+        <div class="input-icon">
+          <i class="fa fa-credit-card"></i>
+        </div>
+      </div> {% endcomment %}
+      {% comment %} <div class="col-half">
+        <div class="input-group input-group-icon">
+          <input type="text" placeholder="Card CVC">
+          <div class="input-icon">
+            <i class="fa fa-user"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-half">
+        <div class="input-group">
+          <select>
+            <option>01 Jan</option>
+            <option>02 Jan</option>
+          </select>
+          <select>
+            <option>2015</option>
+            <option>2016</option>
+          </select>
+        </div>
+      </div> {% endcomment %}
+    </div>
+    {% comment %} <div class="row">
+      <h4>Terms and Conditions</h4>
+      <div class="input-group">
+        <input id="terms" type="checkbox">
+        <label for="terms">I accept the terms and conditions for signing up to this service, and hereby confirm I have read the privacy policy.</label>
+      </div>
+    </div> {% endcomment %}
+    <div class="row">
+      <button type="submit" class="sellBtn">Upload</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>
+{% endblock content %}

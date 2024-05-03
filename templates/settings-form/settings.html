@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
+    
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        margin-top:50px;
+    }
+    
+    h1, h2 {
+        text-align: center;
+        margin-bottom:20px;
+    }
+    
+    .settings-menu {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    
+    .settings-link {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #f5f5f5;
+        color: #333;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-right: 10px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .settings-link:hover {
+        background-color: #e0e0e0;
+    }
+    
+    .view-details ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    
+    .view-details li {
+        margin-bottom: 10px;
+    }
+    
+    form {
+        margin-bottom: 20px;
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    
+    input[type="password"],
+    input[type="email"],
+    input[type="tel"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    .delete-button,
+    .add-button {
+        padding: 5px 10px;
+        background-color: #f44336;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-bottom: 10px;
+    }
+    
+    .add-button {
+        background-color: #4CAF50;
+    }
+    
+    .delete-button:hover {
+        background-color: #d32f2f;
+    }
+    
+    .add-button:hover {
+        background-color: #45a049;
+    }
+    
+    .form-buttons {
+        display: flex;
+        justify-content: flex-end;
+    }
+    
+    .animated-button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .animated-button:hover {
+        background-color: #45a049;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 14px;
+      margin-top: 5px;
+      margin-left: 200px
+  }
+  
+  /* New styles for success message */
+  .success-message {
+      color: green;
+      font-size: 14px;
+      margin-top: 5px;
+      margin-left: 200px
+  }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Settings</h1>
+        <div class="settings-menu">
+            <a id="menu" href="#" class="settings-link" onclick="toggleViewDetails()">View Details</a>
+            <a href="#" id="menu" class="settings-link" onclick="togglePasswordForm()">Password and Security</a>
+            <a href="#"  id="menu" class="settings-link" onclick="togglePersonalDetailsForm()">Personal Details</a>
+        </div>
+    
+        <div class="view-details" style="display: none;">
+            {% comment %} <h2>View Details</h2> {% endcomment %}
+            <ul>
+                <li>Email: <span id="email-display">{{ user.email }}</span></li>
+                <li>Phone Number: <span id="phone-display">{{ profile.phone_no }}</span></li>
+                <li>Username: <span id="username-display">{{ user.username }}</span></li>
+                <li>First Name: <span id="first-name-display">{{ profile.first_name }}</span></li>
+                <li>Last Name: <span id="last-name-display">{{ profile.last_name }}</span></li>
+            </ul>
+        </div>
+    
+        <div class="password-form" style="display: none;">
+            {% comment %} <h2>Password and Security</h2> {% endcomment %}
+            <form method="post" action="{% url 'settings' %}">
+                {% csrf_token %}
+                <input type="hidden" name="formType" value="form1">
+                <label for="current-password">Current Password</label>
+                <input type="password" id="current-password" name="current-password" required>
+    
+                <label for="new-password">New Password</label>
+                <input type="password" id="new-password" name="new-password" required>
+    
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+    
+                <button type="submit" class="animated-button">Update Password</button>
+            </form>
+        </div>
+    
+        <div class="personal-details-form" style="display: none;">
+            {% comment %} <h2>Personal Details</h2> {% endcomment %}
+            <form method="post" action="{% url 'settings' %}">
+                {% csrf_token %}
+                <input type="hidden" name="formType" value="form2">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required value="{{ user.email }}">
+    
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required  value="{{ profile.phone_no }}">
+    
+                <label for="sec_email">Secondary Email</label>
+                <input type="email" id="sec_email" name="sec_email" value="{{ profile.sec_email }}">
+                <button type="submit" class="animated-button">Update</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+      function toggleViewDetails() {
+        const viewDetails = document.querySelector('.view-details');
+        const passwordForm = document.querySelector('.password-form');
+        const personalDetailsForm = document.querySelector('.personal-details-form');
+    
+        viewDetails.style.display = viewDetails.style.display === 'none' ? 'block' : 'none';
+        passwordForm.style.display = 'none';
+        personalDetailsForm.style.display = 'none';
+    }
+    
+    function togglePasswordForm() {
+        const passwordForm = document.querySelector('.password-form');
+        const personalDetailsForm = document.querySelector('.personal-details-form');
+        const viewDetails = document.querySelector('.view-details');
+    
+        passwordForm.style.display = passwordForm.style.display === 'none' ? 'block' : 'none';
+        personalDetailsForm.style.display = 'none';
+        viewDetails.style.display = 'none';
+    }
+    
+    function togglePersonalDetailsForm() {
+        const passwordForm = document.querySelector('.password-form');
+        const personalDetailsForm = document.querySelector('.personal-details-form');
+        const viewDetails = document.querySelector('.view-details');
+    
+        personalDetailsForm.style.display = personalDetailsForm.style.display === 'none' ? 'block' : 'none';
+        passwordForm.style.display = 'none';
+        viewDetails.style.display = 'none';
+    }
+    
+    function removeEmail() {
+        const emailInput = document.getElementById('email');
+        emailInput.value = '';
+    }
+    
+    function removePhone() {
+        const phoneInput = document.getElementById('phone');
+        phoneInput.value = '';
+    }
+    
+    function addEmailField() {
+        const form = document.getElementById('personal-details-form');
+        const newEmailField = document.createElement('div');
+        newEmailField.innerHTML = `
+            <label for="new-email">New Email</label>
+            <input type="email" id="new-email" name="new-email" required>
+            <button type="button" class="delete-button" onclick="removeNewEmailField(this)">Delete</button>
+        `;
+        form.insertBefore(newEmailField, form.lastElementChild);
+    }
+    
+    function addPhoneField() {
+        const form = document.getElementById('personal-details-form');
+        const newPhoneField = document.createElement('div');
+        newPhoneField.innerHTML = `
+            <label for="new-phone">New Phone Number</label>
+            <input type="tel" id="new-phone" name="new-phone" required>
+            <button type="button" class="delete-button" onclick="removeNewPhoneField(this)">Delete</button>
+        `;
+        form.insertBefore(newPhoneField, form.lastElementChild);
+    }
+    
+    function removeNewEmailField(button) {
+        const fieldContainer = button.parentNode;
+        fieldContainer.remove();
+    }
+    
+    function removeNewPhoneField(button) {
+        const fieldContainer = button.parentNode;
+        fieldContainer.remove();
+    }
+    </script>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,37 @@
+#follow-btn {
+    cursor: pointer;
+    font-weight: 700;
+    font-family: Helvetica,"sans-serif";
+    transition: all .2s;
+    padding: 5px 10px;
+    border-radius: 100px;
+    background: rgb(161, 217, 255);;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    margin-left: 20px;
+  }
+  
+  #follow-btn:hover {
+    background: #5fcee7;
+  }
+  
+  #follow-btn > svg {
+    width: 34px;
+    margin-left: 10px;
+    transition: transform .3s ease-in-out;
+  }
+  
+  #follow-btn:hover svg {
+    transform: translateX(5px);
+  }
+  
+  #follow-btn:active {
+    transform: scale(0.95);
+  }
+  
+  a{
+    text-decoration: none;
+  }
+  

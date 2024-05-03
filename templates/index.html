@@ -1,0 +1,334 @@
+{% extends 'products/home-nav.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'assets1/button.css' %}" />
+<link rel="stylesheet" href="{% static 'assets1/style.css' %}" />
+    <main class="main-container">
+        <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+        <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">     
+        <script src='https://unpkg.com/akar-icons-fonts'></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <style>
+            #verify{
+                width: 24px;
+                margin-left:-10px;
+            }
+
+            /* Scrollbar styles */
+.side-menu__suggestions-content::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+  }
+  
+  /* Track */
+  .side-menu__suggestions-content::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color of the track */
+  }
+  
+  /* Handle */
+  .side-menu__suggestions-content::-webkit-scrollbar-thumb {
+    background: #fff; /* Color of the scrollbar handle */
+    border-radius: 4px; /* Rounded corners */
+  }
+  
+  /* Handle on hover */
+  .side-menu__suggestions-content::-webkit-scrollbar-thumb:hover {
+    background: #fff; /* Color of the scrollbar handle on hover */
+  }
+  
+  /* Define the heart-shaped like icon */
+  .like-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff0000"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: transform 0.3s ease;
+}
+
+
+/* Define animation when the user likes the post */
+.like-icon.liked {
+    animation: heartBeat 0.5s ease;
+}
+
+/* Define the heart beat animation */
+@keyframes heartBeat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+        </style>
+    </head>
+          <body>
+            <ul id="uls">
+                <li id="lis">
+                    <a href="{% url 'index' %}" id="als">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li id="lis">
+                    <a href="{% url 'newpost' %}" id="als">
+                        <i class="fas fa-image"></i>
+                        <span>Create Post</span>
+                    </a>
+                </li>	
+                <li id="lis">
+                    <a href="{% url 'message' %}" id="als">
+                        <i class="fas fa-comment-dots"></i>
+                        <span>Message</span>
+                    </a>
+                </li>
+                <li id="lis">
+                    <a href="{% url 'products' %}" id="als">
+                        <i class="fas fa-book-open"></i>
+                        <span>Notes</span>
+                    </a>
+                </li>
+                <li id="lis">
+                    <a href="{% url 'show-notification' %}" id="als">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                    </a>
+                </li>
+                <li id="lis">	
+                    <a href="{% url 'settings' %}" id="als">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li id="lis">
+                    <a href="{% url 'profile' request.user %}" id="als">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+            </ul>
+            
+        
+        </div>  
+        <section class="content-container">
+            <div class="content">
+                
+
+                <div class="posts">
+                    {% for post in post_items %}
+                    <article class="post">
+                        <div class="post__header">
+                            
+                                <div class="post__profile">
+                                    {% if post.user.profile.image %}
+                                    <a href="{{post.user.profile.image.url}}" class="post__avatar">
+                                        
+                                        <img src="{{post.user.profile.image.url}}" alt="User Picture">
+                                        
+                                    </a>
+                                    {% endif %}
+                                    <a href="{{post.user.username}}" class="post__user">{{ post.user.username }}</a>
+                                    {% if post.user.is_superuser %}
+                                    <img src="{% static 'products/verified.png' %}" alt="Verified Badge"  id="verify" >
+                                    {% endif %}
+                                    
+                                </div>
+                            
+                            <button class="post__more-options">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="6.5" cy="11.5" r="1.5" fill="var(--text-dark)"/>
+                                    <circle cx="12" cy="11.5" r="1.5" fill="var(--text-dark)"/>
+                                    <circle cx="17.5" cy="11.5" r="1.5" fill="var(--text-dark)"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="post__content">
+                            <div class="post__medias">
+                                <a href="{% url 'post-details' post.id %}"><img class="post__media" src="{{ post.picture.url }}" alt="Post Content" style="width: 700px; height: 348px; object-fit: contain;"></a>
+<!--                                <img class="post__media" src="{% static 'assets1/insta-clone.png' %}" alt="Post Content">-->
+<!--                                <img class="post__media" src="{% static 'assets1/insta-clone.png' %}" alt="Post Content">-->
+                            </div>
+                        </div>
+
+                        <div class="post__footer">
+                            <div class="post__buttons">
+
+                                <a href="{% url 'like' post.id %}" class="post__button" id="likeButton">
+                                    <span class="like-icon" id="likeIcon"></span>
+                                </a>
+                                
+                                <a href="{% url 'post-details' post.id %}">
+                                <button class="post__button">
+                                    <i class="fas fa-comment" style="font-size: 20px; margin-top:-10px;"></i>
+                                </button>
+                            </a>
+                            
+                                {% comment %} <button class="post__button">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M22.8555 3.44542C22.6978 3.16703 22.3962 3 22.0714 3L2.91369 3.01392C2.52859 3.01392 2.19453 3.25055 2.05997 3.60781C1.96254 3.86764 1.98574 4.14603 2.11565 4.37338C2.16669 4.45689 2.23165 4.53577 2.31052 4.60537L9.69243 10.9712L11.4927 20.5338C11.5623 20.9096 11.8499 21.188 12.2304 21.2483C12.6062 21.3086 12.9774 21.1323 13.1723 20.8029L22.8509 4.35018C23.0179 4.06715 23.0179 3.72381 22.8555 3.44542ZM4.21748 4.39194H19.8164L10.4255 9.75089L4.21748 4.39194ZM12.6248 18.9841L11.1122 10.948L20.5171 5.58436L12.6248 18.9841Z" fill="var(--text-dark)" stroke="var(--text-dark)" stroke-width="0.3"/>
+                                    </svg>
+                                </button> {% endcomment %}
+
+                                <div class="post__indicators"></div>
+
+                                <a href="{% url 'favourite' post.id %}" class="post__button post__button--align-right">
+                                    <i class="fas fa-save" style="color: cornflowerblue;font-size: 20px; margin-left:490px"></i>
+                                </a>
+
+                                {% comment %} <button class="post__button post__button--align-right">
+                                    <i class="ai-trash-can" style="font-size: 20px; "></i>
+                                </button> {% endcomment %}
+                            </div>
+
+                            <div class="post__infos">
+                                <div class="post__likes">
+                                    <a href="#" class="post__likes-avatar">
+<!--                                        <img src="assets1/default-user.png" alt="User Picture">-->
+                                    </a>
+
+<!--                                    <span>Liked by <a class="post__name&#45;&#45;underline" href="#">user123</a> and <a href="#">73 others</a></span>-->
+                                    <span>{{post.likes}} <a class="post__name--underline" href="#">likes</a> <a href="#"></a></span>
+                                </div>
+
+                                <div class="post__description">
+                                    <span>
+                                        <a class="post__name--underline" href="#"><b>@{{post.user.username}}</b></a>
+                                        {{post.caption}}
+
+                                    </span>
+<!--                                    {{post.caption}}-->
+                                </div>
+                                <p style="font-size: 13px;">{% for tag in post.tags.all %}
+                                    <a href="{{ tag.get_absolute_url }}" style="text-decoration: none;">
+                                        #{{ tag }}
+                                    </a>
+                                    {% endfor %}
+                                </p>
+                                <span class="post__date-time">{{post.posted}}</span>
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}
+                    <div class="side-menu__suggestions-content" style="padding: 0 40px;">
+                         <div class="side-menu__suggestions-header">
+                        <h2>Suggestions for You</h2>
+                        {% comment %} <button>See All</button> {% endcomment %}
+                    </div>
+                        {% for user in all_users %}
+                        
+                        {% if request.user.username != user.username and user.is_superuser == False %}
+                        <div class="side-menu__suggestion">
+                            <a href="{% url 'profile' user %}" class="side-menu__suggestion-avatar">
+                                <img src="{{user.profile.image.url}}" alt="User Picture">
+                            </a>
+                            
+                            <div class="side-menu__suggestion-info">
+                                {% if user.profile.first_name %}
+                                <a href="{% url 'profile' user %}">{{user.profile.first_name|title}} {{user.profile.last_name|title}}</a>
+                                {% else %}
+                                <a href="{% url 'profile' user %}">{{user.username}}</a>
+                                {% endif %}
+                                <span>@{{user.username}}</span> 
+                            </div>
+
+                            {% if follow_status == True %}
+                            <a href="{% url 'follow' user 0 %}"><button id="follow-btn">
+                                <span>Follow</span>
+                                <svg width="20" height="14" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="37" cy="37" r="35.5" stroke="black" stroke-width="3"></circle>
+                                    <path d="M25 35.5C24.1716 35.5 23.5 36.1716 23.5 37C23.5 37.8284 24.1716 38.5 25 38.5V35.5ZM49.0607 38.0607C49.6464 37.4749 49.6464 36.5251 49.0607 35.9393L39.5147 26.3934C38.9289 25.8076 37.9792 25.8076 37.3934 26.3934C36.8076 26.9792 36.8076 27.9289 37.3934 28.5147L45.8787 37L37.3934 45.4853C36.8076 46.0711 36.8076 47.0208 37.3934 47.6066C37.9792 48.1924 38.9289 48.1924 39.5147 47.6066L49.0607 38.0607ZM25 38.5L48 38.5V35.5L25 35.5V38.5Z" fill="black"></path>
+                                </svg>
+                            </button></a>
+                            {% else %}
+                            <a href="{% url 'follow' user 1 %}"><button id="follow-btn">
+                                <span>Follow</span>
+                                <svg width="20" height="14" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="37" cy="37" r="35.5" stroke="black" stroke-width="3"></circle>
+                                    <path d="M25 35.5C24.1716 35.5 23.5 36.1716 23.5 37C23.5 37.8284 24.1716 38.5 25 38.5V35.5ZM49.0607 38.0607C49.6464 37.4749 49.6464 36.5251 49.0607 35.9393L39.5147 26.3934C38.9289 25.8076 37.9792 25.8076 37.3934 26.3934C36.8076 26.9792 36.8076 27.9289 37.3934 28.5147L45.8787 37L37.3934 45.4853C36.8076 46.0711 36.8076 47.0208 37.3934 47.6066C37.9792 48.1924 38.9289 48.1924 39.5147 47.6066L49.0607 38.0607ZM25 38.5L48 38.5V35.5L25 35.5V38.5Z" fill="black"></path>
+                                </svg>
+                            </button></a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+            </div>
+
+            <section class="side-menu">
+                <div class="side-menu__user-profile">
+                    <a href="{% url 'profile' request.user %}" target="_blank" class="side-menu__user-avatar">
+                        <img src="{{ request.user.profile.image.url }}" alt="User Picture">
+                    </a>
+                    <div class="side-menu__user-info">
+                        {% if user.profile.first_name %}
+                        <a href="{{request.user.username}}">{{request.user.profile.first_name|title }} {{request.user.profile.last_name|title }}</a>
+                        {% else %}
+                        <a href="{{request.user.username}}">{{user.username}}</a>
+                        {% endif %}
+                        <span>@{{request.user.username}}</span>
+                    </div>
+                    {% comment %} <a class="side-menu__user-button">View Profile</a> {% endcomment %}
+                </div>
+
+                <div class="side-menu__suggestions-section">
+                    <div class="side-menu__suggestions-header">
+                        <h2>Suggestions for You</h2>
+                        {% comment %} <button>See All</button> {% endcomment %}
+                    </div>
+                    <div class="side-menu__suggestions-content" style="max-height: 900px; overflow-y: auto; min-width: 300px;">
+                        {% for user in all_users %}
+                            {% if request.user.username != user.username and user.is_superuser == False %}
+                            <div class="side-menu__suggestion">
+                                <a href="{% url 'profile' user %}" class="side-menu__suggestion-avatar">
+                                    <img src="{{user.profile.image.url}}" alt="User Picture">
+                                </a>
+                                
+                                <div class="side-menu__suggestion-info">
+                                    {% if user.profile.first_name %}
+                                    <a href="{% url 'profile' user %}">{{user.profile.first_name|title}} {{user.profile.last_name|title}}</a>
+                                    {% else %}
+                                    <a href="{% url 'profile' user %}">{{user.username}}</a>
+                                    {% endif %} 
+                                    <span>@{{user.username}}</span>
+                                </div>
+
+                                {% if follow_status == True %}
+                                <a href="{% url 'profile' user.username %}"><button id="follow-btn">
+                                    <span>Follow</span>
+                                    <svg width="20" height="14" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="37" cy="37" r="35.5" stroke="black" stroke-width="3"></circle>
+                                        <path d="M25 35.5C24.1716 35.5 23.5 36.1716 23.5 37C23.5 37.8284 24.1716 38.5 25 38.5V35.5ZM49.0607 38.0607C49.6464 37.4749 49.6464 36.5251 49.0607 35.9393L39.5147 26.3934C38.9289 25.8076 37.9792 25.8076 37.3934 26.3934C36.8076 26.9792 36.8076 27.9289 37.3934 28.5147L45.8787 37L37.3934 45.4853C36.8076 46.0711 36.8076 47.0208 37.3934 47.6066C37.9792 48.1924 38.9289 48.1924 39.5147 47.6066L49.0607 38.0607ZM25 38.5L48 38.5V35.5L25 35.5V38.5Z" fill="black"></path>
+                                    </svg>
+                                </button></a>
+                                {% else %}
+                                <a href="{% url 'profile' user.username %}"><button id="follow-btn">
+                                    <span>Profile</span>
+                                    <svg width="20" height="14" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="37" cy="37" r="35.5" stroke="black" stroke-width="3"></circle>
+                                        <path d="M25 35.5C24.1716 35.5 23.5 36.1716 23.5 37C23.5 37.8284 24.1716 38.5 25 38.5V35.5ZM49.0607 38.0607C49.6464 37.4749 49.6464 36.5251 49.0607 35.9393L39.5147 26.3934C38.9289 25.8076 37.9792 25.8076 37.3934 26.3934C36.8076 26.9792 36.8076 27.9289 37.3934 28.5147L45.8787 37L37.3934 45.4853C36.8076 46.0711 36.8076 47.0208 37.3934 47.6066C37.9792 48.1924 38.9289 48.1924 39.5147 47.6066L49.0607 38.0607ZM25 38.5L48 38.5V35.5L25 35.5V38.5Z" fill="black"></path>
+                                    </svg>
+                                </button></a>
+                                  
+                                
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+            </section>
+            <script src="{% static 'assets1/like.js' %}"></script>
+                <script>
+                    // Add JavaScript to toggle the 'liked' class when the user clicks the like button
+document.getElementById('likeButton').addEventListener('click', function(event) {
+    event.preventDefault();
+    document.getElementById('likeIcon').classList.toggle('liked');
+});
+
+                </script>
+                
+{% endblock content %}

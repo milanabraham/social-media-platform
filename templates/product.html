@@ -1,0 +1,275 @@
+{% extends 'products/navbar.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link rel="shortcut icon" href="{% static 'assets4/images/favicon.png' %}" type="image/x-icon">
+  <title>Giftos</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link href="{% static 'assets4/css/style.css' %}" rel="stylesheet" />
+  <link href="{% static 'assets4/css/responsive.css' %}" rel="stylesheet" />
+</head>
+
+<style>
+  /* Note Card */
+.note-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  margin-top: 20px;
+}
+
+.note-card:hover {
+  transform: translateY(-5px);
+}
+
+.note-img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.no-preview {
+  height: 200px;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #999;
+}
+
+.card-body {
+  padding: 20px;
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+/* Animations */
+.animate__animated.animate__fadeInUp {
+  --animate-duration: 1s;
+}
+
+/* Search Form Styles */
+.search-form {
+  position: relative;
+  display: inline-block;
+  margin-left: 900px;
+}
+
+.search-input {
+  padding: 10px 15px;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  font-size: 16px;
+  width: 200px;
+  transition: width 0.4s ease-in-out;
+  background-color: transparent;
+  color: #333;
+}
+
+.search-input:focus {
+  width: 300px;
+  outline: none;
+}
+
+.search-button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.search-button i {
+  font-size: 18px;
+  color: #333;
+  transition: color 0.4s ease-in-out;
+}
+
+.search-button:hover i {
+  color: #007bff; /* Change to your desired hover color */
+}
+
+.note-para{
+  margin-top: -35px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.layout_padding {
+  padding: 50px 0;
+}
+
+/* Upload Button Styles */
+.upload-button {
+  margin-top: -50px;
+  margin-right: 900px;
+  display: inline-block;
+  padding: 10px 20px;
+  background: linear-gradient(to right, #4CAF50, #2E8B57); /* Green gradient background */
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.upload-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(to right, #2E8B57, #4CAF50); /* Change gradient direction on hover */
+}
+
+.upload-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to right, #4CAF50, #2E8B57); /* Restore gradient on active state */
+}
+
+   .not-found , .not-founds{
+      margin-top: 50px;
+      font-size: 20px;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      animation: fadeInUp 1s;
+      
+    }
+
+    .not-found{
+      color:red;
+    }
+
+    .not-found a{
+      color: #007bff;
+      text-decoration: underline;
+      padding: 10px;
+    }
+    .not-found a:hover{
+      color: #0056b3;
+    }
+    .not-founds{
+      margin-top: -5px;
+      font-family:cursive;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+/* Responsive Styles */
+@media (max-width: 767px) {
+  .note-img,
+  .no-preview {
+    height: 150px;
+  }
+}
+</style>
+<body>
+  <div class="hero_area">
+    <!-- header section -->
+  </div>
+
+  <section class="shop_section layout_padding">
+    <div class="container">
+      <div class="heading_container heading_center">
+        {% comment %} <h2>Download Notes</h2> {% endcomment %}
+        <form action="{% url 'products' %}" method="GET" class="search-form">
+          <input type="text" name="search" placeholder="Search your subject" class="search-input" />
+          <button type="submit" class="search-button">
+              <i class="fa fa-search"></i>
+          </button>
+      </form>
+      
+      
+        <p class="animate__animated animate__fadeInUp note-para"> Opensource notes anyone can download and upload notes</p>
+        <a  href="{% url 'sellNotes'  %}"  class="btn btn-primary upload-button" > upload notes</a>
+      </div>
+      <div class="row">
+        {% for note in notes %}
+        <div class="col-sm-6 col-md-4 col-lg-3 animate__animated animate__fadeInUp">
+          <div class="card note-card">
+            {% if note.preview_image %}
+            <a href="{{note.note.url}}" target="_blank"><img src="media\{{ note.preview_image }}"  class="card-img-top note-img" alt="PDF Preview"></a>
+            {% else %}
+            <div class="no-preview">No Preview Available</div>
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ note.title }}</h5>
+              <p class="card-text">{{ note.course }}</p>
+              <hr>
+              <p>{{ note.institution }}</p>
+              <a href="{{note.note.url}}" class="btn btn-primary" download>Download</a>
+              <a href="{{note.note.url}}" class="btn btn-primary">view pdf</a>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <p class="not-found">No notes found. <a  href="{% url 'products'  %}">Home</a></p>
+        <p class="not-founds">"Share your notes; they may hold the key to students' quest for knowledge."</p>
+        
+        {% endfor %}
+      </div>
+      <div class="btn-box animate__animated animate__fadeInUp">
+        {% comment %} <a href="">View All Notes</a> {% endcomment %}
+      </div>
+    </div>
+  </section>
+
+  
+
+  <script src="{% static 'assets4/js/jquery-3.4.1.min.js' %}"></script>
+  <script src="{% static 'assets4/js/bootstrap.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script src="{% static 'assets4/js/custom.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"></script>
+</body>
+<script>
+  // Animate on Scroll
+const animateElements = document.querySelectorAll('.animate__animated');
+
+function animateOnScroll() {
+  animateElements.forEach((element) => {
+    const elementPosition = element.getBoundingClientRect().top;
+    const viewportHeight = window.innerHeight;
+
+    if (elementPosition < viewportHeight) {
+      element.classList.add('animate__fadeInUp');
+    } else {
+      element.classList.remove('animate__fadeInUp');
+    }
+  });
+}
+
+window.addEventListener('scroll', animateOnScroll);
+animateOnScroll();
+</script>
+</html>
+{% endblock content %}

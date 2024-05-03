@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<head>
+    <style>
+        /* Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        /* Reset and Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Post Styles */
+        .post {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .post__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .post__profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .post__avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+        }
+
+        .post__avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .post__user {
+            font-weight: 600;
+            color: #555;
+            text-decoration: none;
+        }
+
+        .post__more-options {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .post__content {
+            padding: 20px;
+        }
+
+        .post__medias {
+            display: flex;
+            justify-content: center;
+        }
+
+        .post__media {
+            max-width: 100%;
+            max-height: 500px; /* Adjust this value to your desired maximum height */
+            object-fit: contain;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        /* Comment Section Styles */
+        .comment-section {
+            padding: 20px;
+        }
+
+        .comment-input {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .comment-input img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .comment-input textarea {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: none;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .comment-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .comment-item img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .comment-details {
+            flex: 1;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .comment-date {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .comment-text {
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* Like and Share Buttons */
+        .post__buttons {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .post__button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .post__button i {
+            font-size: 20px;
+            color: #555;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+    <script src='https://unpkg.com/akar-icons-fonts'></script>
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+</head>
+<main class="main-container">
+    <section class="content-container">
+        <div class="contendt">
+            <div class="posts">
+                <article class="post">
+                    <!-- Post Header -->
+                    <div class="post__header">
+                        <div class="post__profile">
+                            <a href="{% url 'profile' post.user %}" class="post__avatar">
+                                <img src="{{ post.user.profile.image.url }}" alt="User Picture">
+                            </a>
+                            <a href="{% url 'profile' post.user %}" class="post__user">@{{ post.user.username }}</a>
+                        </div>
+                        {% if request.user == post.user %}
+                            <form action="{% url 'delete-post' post.id %}" method="post">
+                                 {% csrf_token %}
+                                 <button type="submit" class="post__more-options">Delete</button>
+                            </form>
+                        {% endif %}
+                        <button class="post__more-options">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="6.5" cy="11.5" r="1.5" fill="var(--text-dark)"/>
+                                <circle cx="12" cy="11.5" r="1.5" fill="var(--text-dark)"/>
+                                <circle cx="17.5" cy="11.5" r="1.5" fill="var(--text-dark)"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Post Content -->
+                    <div class="post__content">
+                        <div class="post__medias">
+                            <img class="post__media" src="{{ post.picture.url }}" alt="Post Content">
+                        </div>
+                    </div>
+
+                    <!-- Post Footer -->
+                    <div class="post__footer">
+                        <!-- Like and Share Buttons -->
+                        <div class="post__buttons">
+                            <button class="post__button">
+                                <i class="fas fa-thumbs-up"></i>
+                            </button>
+                            <a href="{% url 'favourite' post.id %}" class="post__button">
+                                <i class="ai-save"></i>
+                            </a>
+                        </div>
+
+                        <!-- Comment Section -->
+                        <div class="comment-section">
+                            <div class="comment-input">
+                                <img src="{{ request.user.profile.image.url }}" alt="User Avatar">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <textarea name="body" placeholder="Add a comment..."></textarea>
+                                    <button type="submit" class="btn btn-primary btn-sm shadow-none">Post comment</button>
+                                </form>
+                            </div>
+                            {% for comment in comments %}
+                                <div class="comment-item">
+                                <img src="{{ comment.user.profile.image.url }}" alt="User Avatar">
+                                  <div class="comment-details">
+                                     <span class="comment-author">{{ comment.user.profile.first_name }} {{ comment.user.profile.last_name }}</span>
+                                     <span class="comment-date">{{ comment.date }}</span>
+                                      <p class="comment-text">{{ comment.body }}</p>
+                                      {% if request.user == comment.user %}
+                                      <form action="{% url 'delete-comment' comment.id %}" method="post">
+                                      {% csrf_token %}
+                                      <button type="submit">Delete</button>
+                                      </form>
+                                      {% endif %}
+                                  </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- JavaScript for Animations -->
+<script>
+    // Add smooth scroll animation when clicking on post links
+    const postLinks = document.querySelectorAll('a[href^="#"]');
+    postLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const target = document.querySelector(event.target.getAttribute('href'));
+            target.scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+{% endblock content %}
